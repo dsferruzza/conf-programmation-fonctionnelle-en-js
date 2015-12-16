@@ -35,8 +35,310 @@
     <h3 class="date"></h3>
 </section>
 
-<section class="slide level6">
+<section id="à-propos-de-moi" class="slide level1">
+<h1>À propos de moi</h1>
+<ul>
+<li><a href="https://twitter.com/d_sferruzza">@d_sferruzza</a></li>
+<li><a href="https://github.com/dsferruzza">github.com/dsferruzza</a></li>
+<li>développeur et responsable R&amp;D chez <a href="http://www.escaledigitale.com">Escale</a></li>
+<li>doctorant en génie logiciel à l'Université de Nantes</li>
+<li>écrit des projets perso et pro en Scala et en Haskell (notamment) depuis ~ 2 an</li>
+<li>ce talk est inspiré d'un article que j'ai écrit pour <a href="http://www.24joursdeweb.fr/2014/un-peu-de-programmation-fonctionnelle-en-javascript">24 jours de web</a></li>
+</ul>
+<figure>
+<img src="img/escale.png" />
+</figure>
+</section>
+<section id="quest-ce-que-la-programmation-fonctionnelle" class="slide level1">
+<h1>Qu'est-ce que la programmation fonctionnelle ?</h1>
+<figure>
+<img src="img/suspicious.gif" />
+</figure>
+</section>
+<section id="repères" class="slide level1">
+<h1>Repères</h1>
+<p>Camembert &gt; Programmation fonctionnelle</p>
+<figure>
+<img src="img/trends.png" />
+</figure>
+<figure>
+<img src="img/troll.gif" alt="" width="300">
+</figure>
 
+
+</section>
+<section id="fp-is-for-functional-programming" class="slide level1">
+<h1>FP is for Functional Programming</h1>
+<blockquote>
+<p>[C'est] un <strong>paradigme</strong> de programmation qui considère le calcul en tant qu'<strong>évaluation</strong> de fonctions mathématiques.</p>
+</blockquote>
+<blockquote>
+<p>It is a <strong>declarative</strong> programming paradigm, which means programming is done with <strong>expressions</strong>.</p>
+</blockquote>
+<p><small>Sources : <a href="https://fr.wikipedia.org/wiki/Programmation_fonctionnelle">Wikipedia FR</a> / <a href="https://en.wikipedia.org/wiki/Functional_programming">Wikipedia EN</a></small></p>
+</section>
+<section id="lambda-calcul-λ-calculus" class="slide level1">
+<h1>Lambda calcul (λ calculus)</h1>
+<ul>
+<li>Alonzo Church (1930s)</li>
+<li>système formel équivalent à la machine de Turing</li>
+</ul>
+<figure>
+<img src="img/gordon.png" />
+</figure>
+<p><small>Slides sympa : <a href="http://fr.slideshare.net/normanrichards/the-lambda-calculus-and-the-javascript">The Lambda Calculus and The JavaScript</a></small></p>
+</section>
+<section id="pourquoi-apprendre-fp" class="slide level1">
+<h1>Pourquoi apprendre FP ?</h1>
+<ul>
+<li>prendre du recul sur la programmation</li>
+<li>agrandir <strong>et</strong> consolider sa zone de confort</li>
+<li>réutiliser les concepts intéressants pour faire de <strong>meilleurs programmes</strong></li>
+</ul>
+<blockquote>
+<p>Apprendre Haskell permet d'écrire de meilleurs programmes, même dans d'autres langages.</p>
+</blockquote>
+<figure>
+<img src="img/promise.gif" />
+</figure>
+</section>
+<section id="concepts" class="slide level1">
+<h1>Concepts</h1>
+<p>Aujourd'hui on va explorer des concepts vraiment cools issus de la programmation fonctionnelle moderne :</p>
+<ul>
+<li>transparence référentielle</li>
+<li>fonctions d’ordre supérieur</li>
+<li>évaluation paresseuse</li>
+<li><em>immuabilité</em></li>
+<li><em>types de données algébriques</em></li>
+<li>...</li>
+</ul>
+<p>et les appliquer en JS !</p>
+</section>
+<section id="fonction-impure" class="slide level1">
+<h1>Fonction impure</h1>
+<pre class="javascript"><code>function diviserParDeux(nombre) {
+    var missile = lancerUnMissileNucleaire();
+    fairePorterLeChapeauAuDrManhattan(missile);
+    return nombre / 2;
+}</code></pre>
+<p>Cette fonction a des <strong>effets de bord</strong> <em>observables</em> qu'on ne peut pas deviner en regardant sa valeur de retour. Il faut donc faire constamment attention lorsqu'on la manipule !</p>
+<figure>
+<img src="img/fail.gif" alt="" width="225">
+</figure>
+
+
+</section>
+<section id="fonction-pure" class="slide level1">
+<h1>Fonction pure</h1>
+<pre class="javascript"><code>function ajouterCinq(nombre) {
+    return nombre + 5;
+}</code></pre>
+<p>Cette fonction n'a pas d'effets de bord. Elle renvoie <strong>toujours</strong> le même résultat lorsqu'on l'appelle avec les mêmes arguments.</p>
+<pre class="javascript"><code>ajouterCinq(-4) === ajouterCinq(-4)</code></pre>
+<figure>
+<img src="img/excellent.gif" alt="" width="400">
+</figure>
+
+
+</section>
+<section id="transparence-référentielle" class="slide level1">
+<h1>Transparence référentielle</h1>
+<blockquote>
+<p>Le résultat du programme ne change pas si on remplace une expression par une expression de valeur équivalente.</p>
+</blockquote>
+<p>Utiliser des fonctions pures permet de <strong>raisonner</strong> sur son programme comme sur une équation.</p>
+<figure>
+<img src="img/mind_blown.gif" alt="" width="450">
+</figure>
+
+
+</section>
+<section id="recommandations" class="slide level1">
+<h1>Recommandations</h1>
+<h2 id="construire-son-programme-avec-un-maximum-de-fonctions-pures">Construire son programme avec un maximum de fonctions pures</h2>
+<p>La logique métier est fiable, sans surprise et aisément testable.</p>
+<h2 id="isoler-les-fonctions-qui-ont-des-effets-de-bord">Isoler les fonctions qui ont des effets de bord</h2>
+<p>On sait quelles fonctions ont des effets de bord, ce qui permet d’être prudent lorsqu’on les manipule.</p>
+</section>
+<section id="concepts-1" class="slide level1">
+<h1>Concepts</h1>
+<ul>
+<li><del>transparence référentielle</del></li>
+<li>fonctions d’ordre supérieur</li>
+<li>évaluation paresseuse</li>
+<li><em>immuabilité</em></li>
+<li><em>types de données algébriques</em></li>
+</ul>
+</section>
+<section id="fonction-dordre-supérieur" class="slide level1">
+<h1>Fonction d'ordre supérieur</h1>
+<p>En JS, les fonctions sont des objets de première classe (<em>first-class citizen</em>).</p>
+<p>Une fonction d’ordre supérieur est une fonction qui possède au moins l'une des propriétés suivantes :</p>
+<ul>
+<li>elle accepte au moins une autre fonction en paramètre</li>
+<li>elle retourne une fonction en résultat</li>
+</ul>
+<figure>
+<img src="img/first_class.gif" alt="" width="305">
+</figure>
+
+
+</section>
+<section id="exemple-de-fonction-dordre-supérieur" class="slide level1">
+<h1>Exemple de fonction d'ordre supérieur</h1>
+<pre class="javascript"><code>function appliquerDeuxFois(f, x) {
+    return f(f(x));
+}
+// ^ accepte une fonction en paramètre
+
+function foisTrois(x) {
+    return x * 3;
+}
+
+appliquerDeuxFois(foisTrois, 7);
+// --&gt; (7 * 3) * 3 = 63</code></pre>
+</section>
+<section id="intérêt-des-fonctions-dordre-supérieur" class="slide level1">
+<h1>Intérêt des fonctions d'ordre supérieur</h1>
+<ul>
+<li>bien séparer les différentes tâches effectuées par nos fonctions</li>
+<li>écrire des fonctions composables, modulables, paramétrables</li>
+</ul>
+<figure>
+<img src="img/inception.gif" alt="" width="550">
+</figure>
+
+
+</section>
+<section id="exemple" class="slide level1">
+<h1>Exemple !!</h1>
+<p>On va voir un exemple concret : les opérations sur les tableaux en JS.</p>
+<figure>
+<img src="img/party.gif" />
+</figure>
+</section>
+<section id="situation" class="slide level1">
+<h1>Situation</h1>
+<pre class="javascript"><code>var villes = [
+    { nom: &quot;Nantes&quot;, dep: 44, mer: false },
+    { nom: &quot;Dunkerque&quot;, dep: 59, mer: true },
+    { nom: &quot;Paris&quot;, dep: 75, mer: false },
+];</code></pre>
+<p>On veut obtenir une liste de chaines de type <code>ville (dep)</code>.</p>
+<p>On va écrire une fonction <code>rendreVillesAffichables</code> telle que :</p>
+<pre class="javascript"><code>rendreVillesAffichables(villes);
+// --&gt; [&quot;Nantes (44)&quot;, &quot;Dunkerque (59)&quot;,
+//      &quot;Paris (75)&quot;]</code></pre>
+</section>
+<section id="solution-impérative" class="slide level1">
+<h1>Solution impérative</h1>
+<pre class="javascript"><code>function rendreVillesAffichables(villes) {
+    for (var i = 0; i &lt; villes.length; i++) {
+        villes[i] = villes[i].nom +
+                    &quot; (&quot; + villes[i].dep + &quot;)&quot;;
+    }
+    return villes;
+}</code></pre>
+<p>On mélange 2 comportements :</p>
+<ul>
+<li>parcourir le tableau</li>
+<li>transformer les données</li>
+</ul>
+</section>
+<section id="array.map" class="slide level1">
+<h1>Array.map</h1>
+<pre class="javascript"><code>function rendreVillesAffichables(villes) {
+    function transformation(ville) {
+        return ville.nom +
+                &quot; (&quot; + ville.dep + &quot;)&quot;;
+    }
+    return villes.map(transformation);
+}</code></pre>
+<ul>
+<li><code>Array.map</code> gère le parcours du tableau \o/</li>
+<li>on gère la transformation</li>
+</ul>
+</section>
+<section id="syntaxe-es6" class="slide level1">
+<h1>Syntaxe ES6</h1>
+<p>Avec les <em>lambdas</em> et les <em>template strings</em> c'est encore plus clair !</p>
+<pre class="javascript"><code>villes.map(v =&gt; `${v.nom} (${v.dep})`);
+// --&gt; [&quot;Nantes (44)&quot;, &quot;Dunkerque (59)&quot;,
+//      &quot;Paris (75)&quot;]</code></pre>
+<figure>
+<img src="img/reindeer.gif" />
+</figure>
+</section>
+<section id="array.filter" class="slide level1">
+<h1>Array.filter</h1>
+<pre class="javascript"><code>villes.filter(function(item) {
+    // Si la ville est près de la mer,
+    // on renvoie true, sinon false
+    return item.mer;
+});
+// --&gt; [ { nom: &quot;Dunkerque&quot;, dep: 59,
+//          mer: true }</code></pre>
+</section>
+<section id="chainons" class="slide level1">
+<h1>Chainons !</h1>
+<pre class="javascript"><code>villes.filter(function(item) {
+    return !item.mer;
+}).map(function(item) {
+    return item.nom + &quot; (&quot; + item.dep + &quot;)&quot;;
+});
+// --&gt; [&quot;Nantes (44)&quot;, &quot;Paris (75)&quot;]</code></pre>
+<p><em>Rappel : <code>Array.map</code> et <code>Array.filter</code> sont des fonctions d'ordre supérieur.</em></p>
+</section>
+<section id="array.reduce" class="slide level1">
+<h1>Array.reduce</h1>
+<pre class="javascript"><code>var personnes = [
+    { nom: &quot;Bruce&quot;, age: 30 },
+    { nom: &quot;Tony&quot;, age: 35 },
+    { nom: &quot;Peter&quot;, age: 26 },
+];
+
+personnes.reduce(function(acc, cur) {
+    return acc + cur.age;
+}, 0);
+// --&gt; 91</code></pre>
+</section>
+<section id="array.reduce-1" class="slide level1">
+<h1>Array.reduce</h1>
+<pre class="javascript"><code>function map(tableau, transformation) {
+    return tableau.reduce(function(acc, cur) {
+        acc.push(transformation(cur));
+        return acc;
+    }, []);
+}
+
+function filter(tableau, predicat) {
+    return tableau.reduce(function(acc, cur) {
+        if (predicat(cur)) acc.push(cur);
+        return acc;
+    }, []);
+}</code></pre>
+</section>
+<section id="recommandations-1" class="slide level1">
+<h1>Recommandations</h1>
+<p>Éviter d'utiliser des boucles pour manipuler des tableaux.</p>
+<h2 id="antisèche">Antisèche</h2>
+<p>Si vous avez un tableau et que vous voulez :</p>
+<ul>
+<li>appliquer une transformation sur chacune de ses cases (en conservant leur ordre/nombre) : <strong>map</strong></li>
+<li>supprimer certaines cases (en conservant l’ordre et le contenu des autres) : <strong>filter</strong></li>
+<li>le parcourir pour construire une nouvelle structure de données : <strong>reduce</strong></li>
+</ul>
+</section>
+<section id="concepts-2" class="slide level1">
+<h1>Concepts</h1>
+<ul>
+<li><del>transparence référentielle</del></li>
+<li><del>fonctions d’ordre supérieur</del></li>
+<li>évaluation paresseuse</li>
+<li><em>immuabilité</em></li>
+<li><em>types de données algébriques</em></li>
+</ul>
 </section>
     </div>
   </div>
