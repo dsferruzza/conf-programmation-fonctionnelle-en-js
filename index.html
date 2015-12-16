@@ -340,6 +340,162 @@ function filter(tableau, predicat) {
 <li><em>types de données algébriques</em></li>
 </ul>
 </section>
+<section id="stratégie-dévaluation" class="slide level1">
+<h1>Stratégie d'évaluation</h1>
+<ul>
+<li><strong>quand</strong> évaluer les arguments d'un appel de fonction</li>
+<li><strong>quel type de valeur</strong> passer à la fonction</li>
+</ul>
+<figure>
+<img src="img/bean.gif" alt="" width="600">
+</figure>
+
+
+</section>
+<section id="évaluation-stricte" class="slide level1">
+<h1>Évaluation stricte</h1>
+<p><em>strict evaluation, eager evaluation, greedy evaluation</em></p>
+<ul>
+<li><strong>quand :</strong> dès que l'expression peut être liée à une variable</li>
+<li><strong>quel type de valeurs :</strong>
+<ul>
+<li><em>call by value</em></li>
+<li><em>call by reference</em></li>
+<li><em>call by sharing</em></li>
+<li>...</li>
+</ul></li>
+</ul>
+</section>
+<section id="évaluation-non-stricte" class="slide level1">
+<h1>Évaluation non stricte</h1>
+<p><em>non-strict evaluation, lazy evaluation</em></p>
+<ul>
+<li><strong>call by name :</strong> les arguments sont substitués dans le corps de la fonction</li>
+<li><strong>call by need :</strong> idem, avec <em>mémoïsation</em> (≈ mise en cache du résultat de l'évaluation des arguments)</li>
+<li>...</li>
+</ul>
+</section>
+<section id="évaluation-paresseuse" class="slide level1">
+<h1>Évaluation paresseuse</h1>
+<p>L'exécution d'un bout de code ne se fait pas avant que les résultats de ce bout de code ne soient réellement nécessaires.</p>
+<figure>
+<img src="img/clean.gif" alt="" width="515">
+</figure>
+
+
+</section>
+<section id="à-quoi-ça-sert" class="slide level1">
+<h1>À quoi ça sert ?</h1>
+<ul>
+<li><strong>optimisation :</strong> on peut éviter des calculs inutiles</li>
+<li><strong>maintenabilité :</strong>
+<ul>
+<li>on peut exprimer des structures de données infinies</li>
+<li>on peut définir des structures de contrôle comme des abstractions, au lieu de primitives</li>
+</ul></li>
+</ul>
+</section>
+<section id="lo-dash" class="slide level1">
+<h1>Lo-Dash</h1>
+<blockquote>
+<p>A JavaScript utility library delivering consistency, modularity, performance, &amp; extras.</p>
+</blockquote>
+<p><a href="https://lodash.com/">https://lodash.com/</a></p>
+<ul>
+<li>bibliothèque JS qui permet (notamment) de manipuler les collections</li>
+<li><em>lazy</em> depuis la v3</li>
+</ul>
+</section>
+<section id="exemple-1" class="slide level1">
+<h1>Exemple</h1>
+<pre class="javascript"><code>var t = [0, 1, 2, 3, 4];
+
+function plusUn(nb) {
+    console.log(nb + &#39; + 1&#39;);
+    if (nb &gt; 2) console.log(&#39;Traitement long&#39;);
+    return nb + 1;
+}
+
+function petit(nb) {
+    console.log(nb + &#39; plus petit que 3 ?&#39;);
+    return nb &lt; 3;
+}</code></pre>
+</section>
+<section id="sans-lo-dash" class="slide level1">
+<h1>Sans Lo-Dash</h1>
+<div style="float: right; margin-right: 100px;">
+<pre class="javascript"><code>var js = t
+        .map(plusUn)
+        .filter(petit)
+        .slice(0, 2);</code></pre>
+</div>
+<pre><code>0 + 1
+1 + 1
+2 + 1
+3 + 1
+Traitement long
+4 + 1
+Traitement long
+1 plus petit que 3 ?
+2 plus petit que 3 ?
+3 plus petit que 3 ?
+4 plus petit que 3 ?
+5 plus petit que 3 ?
+[ 1, 2 ]</code></pre>
+</section>
+<section id="sans-lo-dash-1" class="slide level1">
+<h1>Sans Lo-Dash</h1>
+<figure>
+<img src="img/without-lodash.gif" alt="" width="690">
+</figure>
+
+
+</section>
+<section id="avec-lo-dash" class="slide level1">
+<h1>Avec Lo-Dash</h1>
+<pre class="javascript"><code>var _ = require(&#39;lodash&#39;);
+var lodash = _(t)
+        .map(plusUn)
+        .filter(petit)
+        .take(2)
+        .value();</code></pre>
+<pre><code>0 + 1
+1 plus petit que 3 ?
+1 + 1
+2 plus petit que 3 ?
+[ 1, 2 ]</code></pre>
+</section>
+<section id="avec-lo-dash-1" class="slide level1">
+<h1>Avec Lo-Dash</h1>
+<figure>
+<img src="img/with-lodash.gif" alt="" width="690">
+</figure>
+
+
+</section>
+<section id="évaluation-paresseuse-1" class="slide level1">
+<h1>Évaluation paresseuse</h1>
+<ul>
+<li>séparation
+<ul>
+<li>du Calcul, de la <strong>génération</strong><br><em>→ où le calcul d'une valeur est-il défini ?</em></li>
+<li>du Contrôle, de la <strong>condition d'arrêt</strong><br><em>→ où le calcul d'une valeur se produit-il ?</em></li>
+</ul></li>
+<li><em>colle</em> qui permet d'assembler efficacement des (bouts de) programmes : facilite l'approche <em>diviser pour régner</em></li>
+</ul>
+<p><strong>Avantages :</strong> peut augmenter la maintenabilité <em>et</em> les performances</p>
+<p><strong>Inconvénients :</strong> peut introduire de l'<em>overhead</em> (dépend pas mal de la techno)</p>
+</section>
+<section id="concepts-3" class="slide level1">
+<h1>Concepts</h1>
+<ul>
+<li><del>transparence référentielle</del></li>
+<li><del>fonctions d’ordre supérieur</del></li>
+<li><del>évaluation paresseuse</del></li>
+<li><em>immuabilité</em></li>
+<li><em>types de données algébriques</em></li>
+</ul>
+</section>
     </div>
   </div>
 

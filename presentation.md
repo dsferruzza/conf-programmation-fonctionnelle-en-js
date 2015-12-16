@@ -327,3 +327,154 @@ Si vous avez un tableau et que vous voulez :
 - évaluation paresseuse
 - *immuabilité*
 - *types de données algébriques*
+
+
+# Stratégie d'évaluation
+
+- **quand** évaluer les arguments d'un appel de fonction
+- **quel type de valeur** passer à la fonction
+
+<figure><img src="img/bean.gif" alt="" width="600"></figure>
+
+
+# Évaluation stricte
+
+*strict evaluation, eager evaluation, greedy evaluation*
+
+- **quand :** dès que l'expression peut être liée à une variable
+- **quel type de valeurs :**
+	- *call by value*
+	- *call by reference*
+	- *call by sharing*
+	- ...
+
+
+# Évaluation non stricte
+
+*non-strict evaluation, lazy evaluation*
+
+- **call by name :** les arguments sont substitués dans le corps de la fonction
+- **call by need :** idem, avec *mémoïsation* (≈ mise en cache du résultat de l'évaluation des arguments)
+- ...
+
+
+# Évaluation paresseuse
+
+L'exécution d'un bout de code ne se fait pas avant que les résultats de ce bout de code ne soient réellement nécessaires.
+
+<figure><img src="img/clean.gif" alt="" width="515"></figure>
+
+
+# À quoi ça sert ?
+
+- **optimisation :** on peut éviter des calculs inutiles
+- **maintenabilité :**
+	- on peut exprimer des structures de données infinies
+	- on peut définir des structures de contrôle comme des abstractions, au lieu de primitives
+
+
+# Lo-Dash
+
+> A JavaScript utility library delivering consistency, modularity, performance, & extras.
+
+<https://lodash.com/>
+
+- bibliothèque JS qui permet (notamment) de manipuler les collections
+- *lazy* depuis la v3
+
+
+# Exemple
+
+```javascript
+var t = [0, 1, 2, 3, 4];
+
+function plusUn(nb) {
+	console.log(nb + ' + 1');
+	if (nb > 2) console.log('Traitement long');
+	return nb + 1;
+}
+
+function petit(nb) {
+	console.log(nb + ' plus petit que 3 ?');
+	return nb < 3;
+}
+```
+
+
+# Sans Lo-Dash
+
+<div style="float: right; margin-right: 100px;">
+```javascript
+var js = t
+		.map(plusUn)
+		.filter(petit)
+		.slice(0, 2);
+```
+</div>
+
+```
+0 + 1
+1 + 1
+2 + 1
+3 + 1
+Traitement long
+4 + 1
+Traitement long
+1 plus petit que 3 ?
+2 plus petit que 3 ?
+3 plus petit que 3 ?
+4 plus petit que 3 ?
+5 plus petit que 3 ?
+[ 1, 2 ]
+```
+
+
+# Sans Lo-Dash
+
+<figure><img src="img/without-lodash.gif" alt="" width="690"></figure>
+
+
+# Avec Lo-Dash
+
+```javascript
+var _ = require('lodash');
+var lodash = _(t)
+		.map(plusUn)
+		.filter(petit)
+		.take(2)
+		.value();
+```
+
+```
+0 + 1
+1 plus petit que 3 ?
+1 + 1
+2 plus petit que 3 ?
+[ 1, 2 ]
+```
+
+
+# Avec Lo-Dash
+
+<figure><img src="img/with-lodash.gif" alt="" width="690"></figure>
+
+
+# Évaluation paresseuse
+
+- séparation
+	- du Calcul, de la **génération**<br>*→ où le calcul d'une valeur est-il défini ?*
+	- du Contrôle, de la **condition d'arrêt**<br>*→ où le calcul d'une valeur se produit-il ?*
+- *colle* qui permet d'assembler efficacement des (bouts de) programmes : facilite l'approche *diviser pour régner*
+
+**Avantages :** peut augmenter la maintenabilité *et* les performances
+
+**Inconvénients :** peut introduire de l'*overhead* (dépend pas mal de la techno)
+
+
+# Concepts
+
+- ~~transparence référentielle~~
+- ~~fonctions d’ordre supérieur~~
+- ~~évaluation paresseuse~~
+- *immuabilité*
+- *types de données algébriques*
