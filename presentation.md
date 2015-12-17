@@ -64,8 +64,8 @@ Aujourd'hui on va explorer des concepts vraiment cools issus de la programmation
 - transparence référentielle
 - fonctions d’ordre supérieur
 - évaluation paresseuse
-- *immuabilité*
-- *types de données algébriques*
+- immuabilité
+- types de données algébriques
 - ...
 
 et les appliquer en JS !
@@ -129,8 +129,8 @@ On sait quelles fonctions ont des effets de bord, ce qui permet d’être pruden
 - ~~transparence référentielle~~
 - fonctions d’ordre supérieur
 - évaluation paresseuse
-- *immuabilité*
-- *types de données algébriques*
+- immuabilité
+- types de données algébriques
 
 
 # Fonction d'ordre supérieur
@@ -325,8 +325,8 @@ Si vous avez un tableau et que vous voulez :
 - ~~transparence référentielle~~
 - ~~fonctions d’ordre supérieur~~
 - évaluation paresseuse
-- *immuabilité*
-- *types de données algébriques*
+- immuabilité
+- types de données algébriques
 
 
 # Stratégie d'évaluation
@@ -476,5 +476,136 @@ var lodash = _(t)
 - ~~transparence référentielle~~
 - ~~fonctions d’ordre supérieur~~
 - ~~évaluation paresseuse~~
-- *immuabilité*
-- *types de données algébriques*
+- immuabilité
+- types de données algébriques
+
+
+# Immuabilité
+
+> Un objet immuable est un objet dont l'état ne peut pas être modifié après sa création.
+
+![](img/good.gif)
+
+
+# Immuables en JS
+
+- booléens
+- nombres
+- chaines
+
+```javascript
+var n = 10;
+n = 10 + 1;
+```
+
+On a juste changé la référence (`n`), pas les données (`10`)
+
+`10 + 1` ne modifie ni `10` ni `1`
+
+
+# Pas immuables en JS
+
+- objets
+- (et donc) tableaux
+
+```javascript
+var objet = {
+	a: 1,
+	b: 'BATMAN'
+};
+var alias = objet;
+
+objet.a = 2;
+objet // { a: 2, b: 'BATMAN' }
+alias // { a: 2, b: 'BATMAN' }
+```
+
+
+# const != immutable
+
+```javascript
+const objet = {
+	a: 1,
+	b: 'BATMAN'
+};
+const alias = objet;
+
+objet.a = 2;
+o1 // { a: 2, b: 'BATMAN' }
+alias // { a: 2, b: 'BATMAN' }
+```
+
+`const` empêche de modifier la **référence**, pas la valeur !
+
+*`const` c'est top quand même ;)*
+
+
+# Immutable.js
+
+> Immutable persistent data collections for Javascript which increase efficiency and simplicity.
+
+<https://facebook.github.io/immutable-js/>
+
+- une bibliothèque qui propose une API de collections immuables
+- List, Stack, [Ordered]Map, [Ordered]Set, Record, ...
+
+
+# Immutable.js
+
+```javascript
+var Immutable = require('immutable');
+
+var map1 = Immutable.Map({a:1, b:2, c:3});
+var map2 = map1.set('b', 50);
+map1.get('b'); // 2
+map2.get('b'); // 50
+
+var map3 = map2.set('b', 2);
+map1.equals(map3); // --> true
+```
+
+*Attention : ne pas confondre `Map` (structure de données) et `map` (fonction) !*
+
+
+# Avantages
+
+- lisibilité/maintenabilité : 1 référence <-> 1 valeur
+- pas d'effets de bord
+- *thread safe*
+
+Et les perfs ?
+
+![](img/suspicious2.gif)
+
+
+# Performances
+
+Introduit de l'*overhead*, mais souvent le compromis maintenabilité/performances est bon
+
+![](img/tree.png)
+
+
+# Recommandations
+
+## Utilisez `const`
+
+Et `let` le reste du temps.
+
+## Évitez la muabilité dans vos APIs
+
+Une méthode qui modifie un objet devrait renvoyer un nouvel objet, pas le modifier en cachette.
+
+```javascript
+const tableau = [1, 2, 3];
+tableau.push(4);
+// ^ beurk un effet de bord
+```
+
+
+# Concepts
+
+- ~~transparence référentielle~~
+- ~~fonctions d’ordre supérieur~~
+- ~~évaluation paresseuse~~
+- ~~immuabilité~~
+- types de données algébriques

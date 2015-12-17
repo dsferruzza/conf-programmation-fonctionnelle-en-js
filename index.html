@@ -109,8 +109,8 @@
 <li>transparence référentielle</li>
 <li>fonctions d’ordre supérieur</li>
 <li>évaluation paresseuse</li>
-<li><em>immuabilité</em></li>
-<li><em>types de données algébriques</em></li>
+<li>immuabilité</li>
+<li>types de données algébriques</li>
 <li>...</li>
 </ul>
 <p>et les appliquer en JS !</p>
@@ -167,8 +167,8 @@
 <li><del>transparence référentielle</del></li>
 <li>fonctions d’ordre supérieur</li>
 <li>évaluation paresseuse</li>
-<li><em>immuabilité</em></li>
-<li><em>types de données algébriques</em></li>
+<li>immuabilité</li>
+<li>types de données algébriques</li>
 </ul>
 </section>
 <section id="fonction-dordre-supérieur" class="slide level1">
@@ -336,8 +336,8 @@ function filter(tableau, predicat) {
 <li><del>transparence référentielle</del></li>
 <li><del>fonctions d’ordre supérieur</del></li>
 <li>évaluation paresseuse</li>
-<li><em>immuabilité</em></li>
-<li><em>types de données algébriques</em></li>
+<li>immuabilité</li>
+<li>types de données algébriques</li>
 </ul>
 </section>
 <section id="stratégie-dévaluation" class="slide level1">
@@ -492,8 +492,122 @@ var lodash = _(t)
 <li><del>transparence référentielle</del></li>
 <li><del>fonctions d’ordre supérieur</del></li>
 <li><del>évaluation paresseuse</del></li>
-<li><em>immuabilité</em></li>
-<li><em>types de données algébriques</em></li>
+<li>immuabilité</li>
+<li>types de données algébriques</li>
+</ul>
+</section>
+<section id="immuabilité" class="slide level1">
+<h1>Immuabilité</h1>
+<blockquote>
+<p>Un objet immuable est un objet dont l'état ne peut pas être modifié après sa création.</p>
+</blockquote>
+<figure>
+<img src="img/good.gif" />
+</figure>
+</section>
+<section id="immuables-en-js" class="slide level1">
+<h1>Immuables en JS</h1>
+<ul>
+<li>booléens</li>
+<li>nombres</li>
+<li>chaines</li>
+</ul>
+<pre class="javascript"><code>var n = 10;
+n = 10 + 1;</code></pre>
+<p>On a juste changé la référence (<code>n</code>), pas les données (<code>10</code>)</p>
+<p><code>10 + 1</code> ne modifie ni <code>10</code> ni <code>1</code></p>
+</section>
+<section id="pas-immuables-en-js" class="slide level1">
+<h1>Pas immuables en JS</h1>
+<ul>
+<li>objets</li>
+<li>(et donc) tableaux</li>
+</ul>
+<pre class="javascript"><code>var objet = {
+    a: 1,
+    b: &#39;BATMAN&#39;
+};
+var alias = objet;
+
+objet.a = 2;
+objet // { a: 2, b: &#39;BATMAN&#39; }
+alias // { a: 2, b: &#39;BATMAN&#39; }</code></pre>
+</section>
+<section id="const-immutable" class="slide level1">
+<h1>const != immutable</h1>
+<pre class="javascript"><code>const objet = {
+    a: 1,
+    b: &#39;BATMAN&#39;
+};
+const alias = objet;
+
+objet.a = 2;
+o1 // { a: 2, b: &#39;BATMAN&#39; }
+alias // { a: 2, b: &#39;BATMAN&#39; }</code></pre>
+<p><code>const</code> empêche de modifier la <strong>référence</strong>, pas la valeur !</p>
+<p><em><code>const</code> c'est top quand même ;)</em></p>
+</section>
+<section id="immutable.js" class="slide level1">
+<h1>Immutable.js</h1>
+<blockquote>
+<p>Immutable persistent data collections for Javascript which increase efficiency and simplicity.</p>
+</blockquote>
+<p><a href="https://facebook.github.io/immutable-js/">https://facebook.github.io/immutable-js/</a></p>
+<ul>
+<li>une bibliothèque qui propose une API de collections immuables</li>
+<li>List, Stack, [Ordered]Map, [Ordered]Set, Record, ...</li>
+</ul>
+</section>
+<section id="immutable.js-1" class="slide level1">
+<h1>Immutable.js</h1>
+<pre class="javascript"><code>var Immutable = require(&#39;immutable&#39;);
+
+var map1 = Immutable.Map({a:1, b:2, c:3});
+var map2 = map1.set(&#39;b&#39;, 50);
+map1.get(&#39;b&#39;); // 2
+map2.get(&#39;b&#39;); // 50
+
+var map3 = map2.set(&#39;b&#39;, 2);
+map1.equals(map3); // --&gt; true</code></pre>
+<p><em>Attention : ne pas confondre <code>Map</code> (structure de données) et <code>map</code> (fonction) !</em></p>
+</section>
+<section id="avantages" class="slide level1">
+<h1>Avantages</h1>
+<ul>
+<li>lisibilité/maintenabilité : 1 référence &lt;-&gt; 1 valeur</li>
+<li>pas d'effets de bord</li>
+<li><em>thread safe</em></li>
+</ul>
+<p>Et les perfs ?</p>
+<figure>
+<img src="img/suspicious2.gif" />
+</figure>
+</section>
+<section id="performances" class="slide level1">
+<h1>Performances</h1>
+<p>Introduit de l'<em>overhead</em>, mais souvent le compromis maintenabilité/performances est bon</p>
+<figure>
+<img src="img/tree.png" />
+</figure>
+</section>
+<section id="recommandations-2" class="slide level1">
+<h1>Recommandations</h1>
+<h2 id="utilisez-const">Utilisez <code>const</code></h2>
+<p>Et <code>let</code> le reste du temps.</p>
+<h2 id="évitez-la-muabilité-dans-vos-apis">Évitez la muabilité dans vos APIs</h2>
+<p>Une méthode qui modifie un objet devrait renvoyer un nouvel objet, pas le modifier en cachette.</p>
+<pre class="javascript"><code>const tableau = [1, 2, 3];
+tableau.push(4);
+// ^ beurk un effet de bord</code></pre>
+</section>
+<section id="concepts-4" class="slide level1">
+<h1>Concepts</h1>
+<ul>
+<li><del>transparence référentielle</del></li>
+<li><del>fonctions d’ordre supérieur</del></li>
+<li><del>évaluation paresseuse</del></li>
+<li><del>immuabilité</del></li>
+<li>types de données algébriques</li>
 </ul>
 </section>
     </div>
