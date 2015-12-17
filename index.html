@@ -43,7 +43,7 @@
 <li>développeur et responsable R&amp;D chez <a href="http://www.escaledigitale.com">Escale</a></li>
 <li>doctorant en génie logiciel à l'Université de Nantes</li>
 <li>écrit des projets perso et pro en Scala et en Haskell (notamment) depuis ~ 2 an</li>
-<li>ce talk est inspiré d'un article que j'ai écrit pour <a href="http://www.24joursdeweb.fr/2014/un-peu-de-programmation-fonctionnelle-en-javascript">24 jours de web</a></li>
+<li>cette présentation est inspirée d'un article que j'ai écrit pour <a href="http://www.24joursdeweb.fr/2014/un-peu-de-programmation-fonctionnelle-en-javascript">24 jours de web</a></li>
 </ul>
 <figure>
 <img src="img/escale.png" />
@@ -110,8 +110,6 @@
 <li>fonctions d’ordre supérieur</li>
 <li>évaluation paresseuse</li>
 <li>immuabilité</li>
-<li>types de données algébriques</li>
-<li>...</li>
 </ul>
 <p>et les appliquer en JS !</p>
 </section>
@@ -168,7 +166,6 @@
 <li>fonctions d’ordre supérieur</li>
 <li>évaluation paresseuse</li>
 <li>immuabilité</li>
-<li>types de données algébriques</li>
 </ul>
 </section>
 <section id="fonction-dordre-supérieur" class="slide level1">
@@ -337,7 +334,6 @@ function filter(tableau, predicat) {
 <li><del>fonctions d’ordre supérieur</del></li>
 <li>évaluation paresseuse</li>
 <li>immuabilité</li>
-<li>types de données algébriques</li>
 </ul>
 </section>
 <section id="stratégie-dévaluation" class="slide level1">
@@ -493,7 +489,6 @@ var lodash = _(t)
 <li><del>fonctions d’ordre supérieur</del></li>
 <li><del>évaluation paresseuse</del></li>
 <li>immuabilité</li>
-<li>types de données algébriques</li>
 </ul>
 </section>
 <section id="immuabilité" class="slide level1">
@@ -525,7 +520,7 @@ n = 10 + 1;</code></pre>
 </ul>
 <pre class="javascript"><code>var objet = {
     a: 1,
-    b: &#39;BATMAN&#39;
+    b: &#39;BATMAN&#39;,
 };
 var alias = objet;
 
@@ -537,12 +532,12 @@ alias // { a: 2, b: &#39;BATMAN&#39; }</code></pre>
 <h1>const != immutable</h1>
 <pre class="javascript"><code>const objet = {
     a: 1,
-    b: &#39;BATMAN&#39;
+    b: &#39;BATMAN&#39;,
 };
 const alias = objet;
 
 objet.a = 2;
-o1 // { a: 2, b: &#39;BATMAN&#39; }
+objet // { a: 2, b: &#39;BATMAN&#39; }
 alias // { a: 2, b: &#39;BATMAN&#39; }</code></pre>
 <p><code>const</code> empêche de modifier la <strong>référence</strong>, pas la valeur !</p>
 <p><em><code>const</code> c'est top quand même ;)</em></p>
@@ -574,7 +569,7 @@ map1.equals(map3); // --&gt; true</code></pre>
 <section id="avantages" class="slide level1">
 <h1>Avantages</h1>
 <ul>
-<li>lisibilité/maintenabilité : 1 référence &lt;-&gt; 1 valeur</li>
+<li>lisibilité/maintenabilité : 1 référence pour 1 valeur</li>
 <li>pas d'effets de bord</li>
 <li><em>thread safe</em></li>
 </ul>
@@ -592,13 +587,13 @@ map1.equals(map3); // --&gt; true</code></pre>
 </section>
 <section id="recommandations-2" class="slide level1">
 <h1>Recommandations</h1>
-<h2 id="utilisez-const">Utilisez <code>const</code></h2>
-<p>Et <code>let</code> le reste du temps.</p>
-<h2 id="évitez-la-muabilité-dans-vos-apis">Évitez la muabilité dans vos APIs</h2>
+<h2 id="utiliser-const">Utiliser <code>const</code></h2>
+<p>Et <code>let</code> le reste du temps. Pas <code>var</code>.</p>
+<h2 id="éviter-la-mutabilité-dans-les-apis-quon-créemanipule">Éviter la mutabilité dans les APIs qu'on crée/manipule</h2>
 <p>Une méthode qui modifie un objet devrait renvoyer un nouvel objet, pas le modifier en cachette.</p>
 <pre class="javascript"><code>const tableau = [1, 2, 3];
 tableau.push(4);
-// ^ beurk un effet de bord</code></pre>
+//       ^ beurk un effet de bord</code></pre>
 </section>
 <section id="concepts-4" class="slide level1">
 <h1>Concepts</h1>
@@ -607,8 +602,37 @@ tableau.push(4);
 <li><del>fonctions d’ordre supérieur</del></li>
 <li><del>évaluation paresseuse</del></li>
 <li><del>immuabilité</del></li>
-<li>types de données algébriques</li>
 </ul>
+<figure>
+<img src="img/drop.gif" alt="" width="500">
+</figure>
+
+
+</section>
+<section id="ressources" class="slide level1">
+<h1>Ressources</h1>
+<ul>
+<li><a href="http://learnyouahaskell.com/">Learn You A Haskell For Great Good</a> : livre très accessible pour débuter Haskell (<a href="http://lyah.haskell.fr/">traduction FR non officielle</a>)</li>
+<li><a href="https://leanpub.com/javascript-allonge">JavaScript Alongé</a> : un livre avancé sur JavaScript ; il explique et met en place certains concepts vus ici</li>
+<li><a href="http://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf">Why Functional Programming Matters</a> : pourquoi les fonctions d'ordre supérieur et l'évaluation paresseuse sont parmi les meilleurs outils pour écrire des programmes modulaires</li>
+</ul>
+</section>
+<section id="ressources-1" class="slide level1">
+<h1>Ressources</h1>
+<ul>
+<li><a href="http://www.infoq.com/interviews/john-hughes-fp">John Hughes on Why Functional Programming Matters!</a></li>
+<li><a href="http://fsharpforfunandprofit.com/posts/is-your-language-unreasonable/">Is your programming language unreasonable?</a> <em>or, why predictability is important</em></li>
+<li><a href="https://gcanti.github.io/tcomb/">tcomb.js</a> : <em>Domain Driven Design</em> et vérification de types pour JavaScript</li>
+</ul>
+</section>
+<section id="questions" class="slide level1">
+<h1>Questions ?</h1>
+<figure>
+<img src="img/question.gif" />
+</figure>
+<p>Twitter : <a href="https://twitter.com/d_sferruzza">@d_sferruzza</a></p>
+<p>Slides sur GitHub :</p>
+<p><a href="http://github.com/dsferruzza/conf-programmation-fonctionnelle-en-js">dsferruzza/conf-programmation-fonctionnelle-en-js</a></p>
 </section>
     </div>
   </div>
