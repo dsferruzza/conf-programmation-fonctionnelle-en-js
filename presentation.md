@@ -27,6 +27,13 @@ Camembert > Programmation fonctionnelle
 <figure><img src="img/troll.gif" alt="" width="300"></figure>
 
 
+# Repères
+
+<figure><img src="img/trends2.png" alt="" width="150"></figure>
+
+![](img/wat.gif)
+
+
 # FP is for Functional Programming
 
 > [C'est] un **paradigme** de programmation qui considère le calcul en tant qu'**évaluation** de fonctions mathématiques.
