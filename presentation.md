@@ -8,7 +8,7 @@
 - développeur et responsable R&D chez [Escale](http://www.escaledigitale.com)
 - doctorant en génie logiciel à l'Université de Nantes
 - écrit des projets perso et pro en Scala et en Haskell (notamment) depuis ~ 2 an
-- ce talk est inspiré d'un article que j'ai écrit pour [24 jours de web](http://www.24joursdeweb.fr/2014/un-peu-de-programmation-fonctionnelle-en-javascript)
+- cette présentation est inspirée d'un article que j'ai écrit pour [24 jours de web](http://www.24joursdeweb.fr/2014/un-peu-de-programmation-fonctionnelle-en-javascript)
 
 ![](img/escale.png)
 
@@ -65,8 +65,6 @@ Aujourd'hui on va explorer des concepts vraiment cools issus de la programmation
 - fonctions d’ordre supérieur
 - évaluation paresseuse
 - immuabilité
-- types de données algébriques
-- ...
 
 et les appliquer en JS !
 
@@ -130,7 +128,6 @@ On sait quelles fonctions ont des effets de bord, ce qui permet d’être pruden
 - fonctions d’ordre supérieur
 - évaluation paresseuse
 - immuabilité
-- types de données algébriques
 
 
 # Fonction d'ordre supérieur
@@ -326,7 +323,6 @@ Si vous avez un tableau et que vous voulez :
 - ~~fonctions d’ordre supérieur~~
 - évaluation paresseuse
 - immuabilité
-- types de données algébriques
 
 
 # Stratégie d'évaluation
@@ -477,7 +473,6 @@ var lodash = _(t)
 - ~~fonctions d’ordre supérieur~~
 - ~~évaluation paresseuse~~
 - immuabilité
-- types de données algébriques
 
 
 # Immuabilité
@@ -511,7 +506,7 @@ On a juste changé la référence (`n`), pas les données (`10`)
 ```javascript
 var objet = {
 	a: 1,
-	b: 'BATMAN'
+	b: 'BATMAN',
 };
 var alias = objet;
 
@@ -526,12 +521,12 @@ alias // { a: 2, b: 'BATMAN' }
 ```javascript
 const objet = {
 	a: 1,
-	b: 'BATMAN'
+	b: 'BATMAN',
 };
 const alias = objet;
 
 objet.a = 2;
-o1 // { a: 2, b: 'BATMAN' }
+objet // { a: 2, b: 'BATMAN' }
 alias // { a: 2, b: 'BATMAN' }
 ```
 
@@ -569,7 +564,7 @@ map1.equals(map3); // --> true
 
 # Avantages
 
-- lisibilité/maintenabilité : 1 référence <-> 1 valeur
+- lisibilité/maintenabilité : 1 référence pour 1 valeur
 - pas d'effets de bord
 - *thread safe*
 
@@ -587,18 +582,19 @@ Introduit de l'*overhead*, mais souvent le compromis maintenabilité/performance
 
 # Recommandations
 
-## Utilisez `const`
+## Utiliser `const`
 
 Et `let` le reste du temps.
+Pas `var`.
 
-## Évitez la muabilité dans vos APIs
+## Éviter la mutabilité dans les APIs qu'on crée/manipule
 
 Une méthode qui modifie un objet devrait renvoyer un nouvel objet, pas le modifier en cachette.
 
 ```javascript
 const tableau = [1, 2, 3];
 tableau.push(4);
-// ^ beurk un effet de bord
+//       ^ beurk un effet de bord
 ```
 
 
@@ -608,4 +604,30 @@ tableau.push(4);
 - ~~fonctions d’ordre supérieur~~
 - ~~évaluation paresseuse~~
 - ~~immuabilité~~
-- types de données algébriques
+
+<figure><img src="img/drop.gif" alt="" width="500"></figure>
+
+
+# Ressources
+
+- [Learn You A Haskell For Great Good](http://learnyouahaskell.com/) : livre très accessible pour débuter Haskell ([traduction FR non officielle](http://lyah.haskell.fr/))
+- [JavaScript Alongé](https://leanpub.com/javascript-allonge) : un livre avancé sur JavaScript ; il explique et met en place certains concepts vus ici
+- [Why Functional Programming Matters](http://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf) : pourquoi les fonctions d'ordre supérieur et l'évaluation paresseuse sont parmi les meilleurs outils pour écrire des programmes modulaires
+
+
+# Ressources
+
+- [John Hughes on Why Functional Programming Matters!](http://www.infoq.com/interviews/john-hughes-fp)
+- [Is your programming language unreasonable?](http://fsharpforfunandprofit.com/posts/is-your-language-unreasonable/) *or, why predictability is important*
+- [tcomb.js](https://gcanti.github.io/tcomb/) : *Domain Driven Design* et vérification de types pour JavaScript
+
+
+# Questions ?
+
+![](img/question.gif)
+
+Twitter : [\@d_sferruzza](https://twitter.com/d\_sferruzza)
+
+Slides sur GitHub :
+
+[dsferruzza/conf-programmation-fonctionnelle-en-js](http://github.com/dsferruzza/conf-programmation-fonctionnelle-en-js)
